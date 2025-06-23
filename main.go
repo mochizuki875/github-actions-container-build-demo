@@ -9,6 +9,15 @@ func genarateMessage(name string) string {
 	if name == "" {
 		name = "World"
 	}
+
+	///////////// Test for staticcheck /////////////////
+	// unusedVar := "This will cause a staticcheck error"
+
+	// if true == true {
+	// 	fmt.Println("Always true")
+	// }
+	///////////////////////////////////////////////////
+
 	return "Hello " + name + "\n"
 }
 

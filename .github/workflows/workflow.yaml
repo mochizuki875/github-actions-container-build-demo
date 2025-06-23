@@ -6,21 +6,33 @@ on: [push]
   # pull_request:
   #   branches: [ $default-branch ]
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
-
-  build:
+  setup:
     runs-on: ubuntu-latest
-
     steps:  # Define Steps
     - uses: actions/checkout@v4  # Checkout the repository
-
     - name: Set up Go 1.24  # Set up Go environment
       uses: actions/setup-go@v4  # Use the setup-go action
       with:
         go-version: '1.24'
 
-    - name: Build
-      run: go build -v ./...
+  lint:
+    needs: setup  # This job depends on the setup job
+    runs-on: ubuntu-latest
+    steps:
+    # Running Staticcheck
+    # https://staticcheck.dev/docs/running-staticcheck/ci/github-actions/
+    - uses: dominikh/staticcheck-action@v1.2.0
+      with:
+        version: "2022.1.1"
 
+  test:
+    needs: setup  # This job depends on the setup job
+    runs-on: ubuntu-latest
+    steps:
     - name: Test
       run: go test -v ./...
