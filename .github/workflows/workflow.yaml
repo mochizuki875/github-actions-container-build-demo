@@ -11,24 +11,19 @@ on: [push]
 #   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  setup-go:
-    uses: ./.github/workflows/setup-go.yaml
-    with:
-      go-version: '1.24'
-
-  lint:
-    needs: setup-go
+  ci:
     runs-on: ubuntu-latest
     steps:
-    # Running Staticcheck
-    # https://staticcheck.dev/docs/running-staticcheck/ci/github-actions/
-    - uses: dominikh/staticcheck-action@v1.2.0
-      with:
-        version: "2022.1.1"
-
-  test:
-    needs: setup-go
-    runs-on: ubuntu-latest
-    steps:
-    - name: Test
-      run: go test -v ./...
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24'
+      - name: lint
+        # Running Staticcheck
+        # https://staticcheck.dev/docs/running-staticcheck/ci/github-actions/
+        uses: dominikh/staticcheck-action@v1.2.0
+        with:
+          version: "2022.1.1"
+      - name: test
+        run: go test -v ./...
