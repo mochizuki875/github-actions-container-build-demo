@@ -28,6 +28,7 @@ jobs:
 
   test:
     needs: setup-go
+    runs-on: ubuntu-latest
     steps:
     - name: Test
       run: go test -v ./...
