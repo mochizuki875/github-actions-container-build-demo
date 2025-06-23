@@ -6,22 +6,18 @@ on: [push]
   # pull_request:
   #   branches: [ $default-branch ]
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+# env:
+#   REGISTRY: ghcr.io
+#   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:  # Define Steps
-    - uses: actions/checkout@v4  # Checkout the repository
-    - name: Set up Go 1.24  # Set up Go environment
-      uses: actions/setup-go@v4  # Use the setup-go action
-      with:
-        go-version: '1.24'
+  setup-go:
+    uses: ./.github/workflows/setup-go.yaml
+    with:
+      go-version: '1.24'
 
   lint:
-    needs: setup  # This job depends on the setup job
+    needs: setup-go
     runs-on: ubuntu-latest
     steps:
     # Running Staticcheck
@@ -31,8 +27,7 @@ jobs:
         version: "2022.1.1"
 
   test:
-    needs: setup  # This job depends on the setup job
-    runs-on: ubuntu-latest
+    needs: setup-go
     steps:
     - name: Test
       run: go test -v ./...
