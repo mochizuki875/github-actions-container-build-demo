@@ -3,7 +3,7 @@ name: Go Lint
 on: [push]
 
 jobs:
-  ci:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -1,4 +1,4 @@
-name: Go Build
+name: Image Build
 
 on: [push]
   # push:
